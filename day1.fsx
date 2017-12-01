@@ -11,7 +11,29 @@ let findMatchedChar str =
     |> Seq.fold folder ([], head)
     |> fst
 
-File.ReadAllText(Path.Combine(__SOURCE_DIRECTORY__, "day1_input.txt"))
-|> findMatchedChar
-|> List.sumBy (string >> int)
-|> printfn "%A"
+let findMatchedHalfway input =
+    let l = Array.length input
+    let rec loop l (arr: 'T[]) res i =
+        let recur = loop l arr
+        if i >= l then res
+        else
+            if arr.[i] = arr.[(i + l/2) % l] then
+                recur (arr.[i]::res) (i+1)
+            else
+                recur res (i+1)
+    loop l input [] 0
+
+let part1() =
+    File.ReadAllText(Path.Combine(__SOURCE_DIRECTORY__, "day1_input.txt"))
+    |> findMatchedChar
+    |> List.sumBy (string >> int)
+    |> printfn "%A"
+
+let part2() =
+    File.ReadAllText(Path.Combine(__SOURCE_DIRECTORY__, "day1_input.txt"))
+    |> fun s -> s.ToCharArray()
+    |> findMatchedHalfway
+    |> List.sumBy (string >> int)
+    |> printfn "%A"
+
+part2()
