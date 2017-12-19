@@ -4,16 +4,20 @@ let input = File.ReadAllLines(Path.Combine(__SOURCE_DIRECTORY__, "day5_input.txt
 
 let maze = Array.map int input
 
-let rec walk (maze: int[]) i step =
+
+let rec walk changeOffset (maze: int[]) i step =
     if i >= maze.Length || i < 0 then
         step
     else
         let offset = maze.[i]
-        maze.[i] <- offset + 1
+        maze.[i] <- changeOffset offset
         let i' = i + offset
-        walk maze i' (step + 1)
+        walk changeOffset maze i' (step + 1)
 
 let part1 () =
-    walk maze 0 0
+    walk (fun x -> x + 1) maze 0 0
 
-part1 () |> printfn "%d"
+let part2 () =
+    walk (fun x -> if x >= 3 then x - 1 else x + 1) maze 0 0
+
+part2 () |> printfn "%d"
