@@ -32,5 +32,15 @@ let part1 () =
             loop banks' traces' (counter + 1)
     loop banks Set.empty 0
 
-part1()
+let part2 () =
+    let rec loop banks traces counter =
+        match Map.tryFind banks traces with
+        | Some idx -> counter - idx
+        | None ->
+            let traces' = Map.add banks counter traces
+            let banks' = redistribute banks
+            loop banks' traces' (counter + 1)
+    loop banks Map.empty 0
+
+part2()
 |> printfn "%d"
