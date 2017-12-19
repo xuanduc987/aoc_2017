@@ -8,9 +8,19 @@ let isValid (passphrase: string) =
     |> Array.countBy id
     |> Array.forall (fun (_, c) -> c = 1)
 
+let isValid' (passphrase: string) =
+    let words = passphrase.Split(' ')
+    words
+    |> Array.countBy (fun s -> s.ToCharArray() |> Array.sort)
+    |> Array.forall (fun (_, c) -> c = 1)
+
 let part1 input =
     input
     |> Array.sumBy (fun s -> if isValid s then 1 else 0)
 
-part1 input
+let part2 input =
+    input
+    |> Array.sumBy (fun s -> if isValid' s then 1 else 0)
+
+part2 input
 |> printfn "%d"
